@@ -1,23 +1,21 @@
+import 'package:autentification/app/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'app/presentation/views/logout.dart';
+final authControllerProvider = StateNotifierProvider<AuthController, AuthState>(
+  (ref) => AuthController(),
+);
 
-final authStateProvider =
-    StateProvider<AuthState>((ref) => AuthState.unauthenticated());
-final authServiceProvider =
-    StateNotifierProvider<AuthService, AuthState>((ref) => AuthService());
-
-class Autentification extends ConsumerWidget {
+class Autentication extends ConsumerWidget {
   static var routeName = '/';
 
-  const Autentification({super.key});
+  const Autentication({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
+    final authState = ref.watch(authControllerProvider);
 
-    return authState.isAuthenticated ? const Logoutview() : const LoginPage();
+    return authState.isAuthenticated ? const HomeView() : const LoginPage();
   }
 }
 
@@ -26,35 +24,36 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authService = ref.read(authServiceProvider.notifier);
+    final state = ref.watch(authControllerProvider);
+    final notifier = ref.read(authControllerProvider.notifier);
 
     return Scaffold(
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
-            await authService.login();
+            await notifier.login();
           },
-          child: Text('Login'),
+          child: Text('Login: ${state.isAuthenticated}'),
         ),
       ),
     );
   }
 }
 
-class AuthService extends StateNotifier<AuthState> {
-  AuthService() : super(AuthState.unauthenticated());
+class AuthController extends StateNotifier<AuthState> {
+  AuthController() : super(AuthState.unauthenticated());
 
   // Simulación de un servicio de autenticación
   Future<void> login() async {
-    await Future.delayed(const Duration(
-        seconds: 2)); // Simulando un retraso por la autenticación
+    // await Future.delayed(const Duration(
+    //     seconds: 2)); // Simulando un retraso por la autenticación
     print('Usuario conectado');
     state = AuthState.authenticated();
   }
 
   Future<void> logout() async {
-    await Future.delayed(
-        const Duration(seconds: 1)); // Simulando el cierre de sesión
+    // await Future.delayed(
+    //     const Duration(seconds: 1)); // Simulando el cierre de sesión
     print('Usuario desconectado');
     state = AuthState.unauthenticated();
   }
