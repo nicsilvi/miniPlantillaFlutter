@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'app/core/constants/global.dart';
 import 'app/presentation/controllers/router_controller.dart';
 import 'app/presentation/controllers/theme_controller.dart';
 import 'app/presentation/shared/theme.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     const ProviderScope(
       child: MyAppConfig(),

@@ -1,4 +1,4 @@
-import 'package:autentification/app/presentation/views/auth.dart';
+import 'package:autentification/app/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,8 +12,9 @@ class DrawerMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeService = ref.watch(
         themeControllerProvider); // es watch pq se reconstruye este mismo widget
-    final authService = ref.read(authControllerProvider
-        .notifier); //aqui no se reconstruye, sino qe cambia de pantalla
+    final authService = ref
+        .read(authenticationRepositoryProvider)
+        .getUser; //aqui no se reconstruye, sino qe cambia de pantalla
 
     return Drawer(
         child: SingleChildScrollView(
@@ -59,7 +60,7 @@ class DrawerMenu extends ConsumerWidget {
               leading: const Icon(Icons.logout),
               title: const Text("Cerrar sesión"),
               onTap: () async {
-                await authService.logout();
+                //;
                 if (!context.mounted) return;
                 context.go('/');
               },

@@ -1,4 +1,4 @@
-import 'package:autentification/app/presentation/views/auth.dart';
+import 'package:autentification/app/presentation/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,9 +12,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     navigatorKey: _navigatorKey,
     routes: [
       GoRoute(
-        name: Autentication.routeName,
+        name: LoginPage.routeName,
         path: '/',
-        builder: (context, state) => const Autentication(),
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         name: HomeView.routeName,
