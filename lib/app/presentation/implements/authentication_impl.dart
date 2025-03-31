@@ -212,4 +212,22 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 } */
+
+  Stream<UserModel?> isUserLoggedIn() async* {
+    final userStream = FirebaseAuth.instance.authStateChanges();
+    await for (final User? user in userStream) {
+      //usuari mno loggejat
+      if (user == null) {
+        yield null;
+      } else {
+        //mapejarem el model de dades de firebase amb el nostre
+        yield UserModel(
+          id: user.uid,
+          email: user.email ?? '',
+          firstName: user.email?.split('@')[0] ?? '-',
+          createdAt: DateTime.now(),
+        );
+      }
+    }
+  }
 }
