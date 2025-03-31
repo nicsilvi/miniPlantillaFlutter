@@ -4,7 +4,7 @@ final themeControllerProvider =
     StateNotifierProvider<ThemeController, bool>((ref) => ThemeController());
 
 class ThemeController extends StateNotifier<bool> {
-  ThemeController() : super(true);
+  ThemeController() : super(false);
 
   void updateTheme() {
     state = !state;

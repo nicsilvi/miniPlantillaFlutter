@@ -1,4 +1,5 @@
 import 'package:autentification/app/presentation/views/login_view.dart';
+import 'package:autentification/app/presentation/views/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,6 +21,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: HomeView.routeName,
         path: '/home',
         builder: (context, state) => const HomeView(),
+      ),
+      GoRoute(
+        name: Register.routeName,
+        path: '/register',
+        builder: (context, state) => const Register(),
       )
     ],
     // redirect: (context, state) {

@@ -4,15 +4,16 @@ import 'package:go_router/go_router.dart';
 
 import '../controllers/auth_controller.dart';
 
-class LoginPage extends ConsumerWidget {
-  const LoginPage({super.key});
-  static var routeName = '/';
+class Register extends ConsumerWidget {
+  const Register({super.key});
+  static var routeName = '/register';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //final state = ref.watch(authenticationRepositoryProvider);
     final authNotifier = ref.read(authenticationRepositoryProvider);
     final TextEditingController emailController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
@@ -24,9 +25,21 @@ class LoginPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Inicio de sesión",
-                  style: Theme.of(context).textTheme.bodyLarge),
+              Text("Registro:", style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 24),
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: "Nombre",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+              ),
               TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(
@@ -59,8 +72,11 @@ class LoginPage extends ConsumerWidget {
               SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
-                  await authNotifier.signIn(
-                      emailController.text, passwordController.text);
+                  await authNotifier.register(
+                    email: emailController.text,
+                    name: nameController.text,
+                    password: passwordController.text,
+                  );
                   context.go('/home');
                 },
                 child: Text('Login'),
@@ -68,15 +84,15 @@ class LoginPage extends ConsumerWidget {
               SizedBox(height: 12),
               TextButton(
                 onPressed: () {
-                  context.go('/register');
+                  context.go('/');
                 },
                 child: RichText(
                   text: const TextSpan(
-                    text: "¿No tienes cuenta?   ",
+                    text: "¿Ya tienes cuenta?   ",
                     style: TextStyle(color: Colors.black),
                     children: [
                       TextSpan(
-                        text: "Regístrate",
+                        text: "Inicia sesión",
                         style: TextStyle(color: Colors.greenAccent),
                       ),
                     ],
