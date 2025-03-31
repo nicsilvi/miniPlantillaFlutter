@@ -22,8 +22,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         password: password,
       );
       if (credentials.user == null) {
+        print("error null");
         return null;
       }
+      final userModel = UserModel(
+        id: credentials.user!.uid,
+        email: email,
+        firstName: email.split('@').first,
+        createdAt: DateTime.now(),
+      );
       /* para recuperar los datos de firebaseStore, luego habra que cambiar el return por el userModel
       final doc = await FirebaseFirestore.instance
           .collection('users') 
@@ -36,12 +43,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
           */
 
-      return null;
+      return userModel;
     } on FirebaseAuthException catch (e) {
-      debugPrint(e.code);
+      debugPrint("FirebaseAuth Error: ${e.code}");
       return null;
     } catch (e) {
-      debugPrint(e.toString as String?);
+      debugPrint("Error general: ${e.toString()}");
       return null;
     }
   }

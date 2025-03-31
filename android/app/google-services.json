@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "17068021892",
+    "project_id": "plantillaflutterpro",
+    "storage_bucket": "plantillaflutterpro.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17068021892:android:6fbc79dbf8beac21d1cad1",
+        "android_client_info": {
+          "package_name": "com.plantilla.autentification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17068021892-v9pottp1urktskdhvsf7mqb98f509q18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.plantilla.autentification",
+            "certificate_hash": "2404fc3f4032fdb3fc72af1270cfdf77f7745822"
+          }
+        },
+        {
+          "client_id": "17068021892-2ofdgsvnpfopft9145iusir5q3197ucj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLD9iOcjhIWJZ1YJG7O-0B48v0_BvIA90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17068021892-2ofdgsvnpfopft9145iusir5q3197ucj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,19 +8,48 @@ class AppTheme {
   // Light theme  ---------------------------------------------------------------------------------------------
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     //al ser copywith solo se modifica lo especificado aqui
-    bottomSheetTheme:
-        const BottomSheetThemeData(backgroundColor: AppColors.lightBg),
-    drawerTheme: const DrawerThemeData(backgroundColor: AppColors.lightBg),
+
     scaffoldBackgroundColor: AppColors.lightBg,
     appBarTheme: const AppBarTheme(
-      iconTheme: IconThemeData(color: AppColors.light),
-      backgroundColor: AppColors.lightBg,
+      color: AppColors.lightBg,
+      iconTheme: IconThemeData(color: Color.fromARGB(255, 87, 84, 84)),
       titleTextStyle: TextStyle(
+        color: AppColors.dark,
+        fontSize: 22,
         fontWeight: FontWeight.bold,
-        color: AppColors.lightop,
-        fontSize: 26,
       ),
+      elevation: 4, // Un poco de sombra para el appBar
     ),
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: Color.fromARGB(255, 199, 185, 185),
+      scrimColor: Color.fromARGB(137, 245, 235, 235),
+    ),
+    bottomSheetTheme:
+        const BottomSheetThemeData(backgroundColor: Color(0xFF333333)),
+
+    // Text styles
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(
+          color: Color.fromARGB(179, 0, 0, 0), fontSize: 16), // Texto normal
+      bodyMedium: TextStyle(
+          color: Color.fromARGB(137, 0, 0, 0),
+          fontSize: 14), // Texto más pequeño
+      headlineLarge: TextStyle(
+          color: Color.fromARGB(255, 0, 0, 0),
+          fontSize: 32,
+          fontWeight: FontWeight.bold), // Títulos grandes
+      headlineMedium: TextStyle(
+          color: Color.fromARGB(179, 0, 0, 0),
+          fontSize: 28,
+          fontWeight: FontWeight.w500), // Subtítulos
+    ),
+    iconTheme: const IconThemeData(
+        color: Color.fromARGB(255, 8, 8, 8)), // Íconos blancos
+    buttonTheme: const ButtonThemeData(
+      buttonColor: Color(0xFF6200EE),
+    ),
+    // Ajuste del color de los elementos deseleccionados (como Checkboxes, etc)
+    unselectedWidgetColor: const Color.fromARGB(179, 55, 10, 114),
   );
 
   // darktheme  ---------------------------------------------------------------------------------------------
