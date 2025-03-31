@@ -23,6 +23,8 @@ abstract class AuthenticationRepository {
   Future<bool> signOut();
   Future<UserModel?> getUser(String userId);
 
+  Stream<UserModel?> isUserLoggedIn();
+
   // Definir el estado de autenticación
 
   //Future<UserModel?> getUser(String userId);

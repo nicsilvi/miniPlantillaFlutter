@@ -1,3 +1,5 @@
+import 'package:autentification/app/domain/models/user_model.dart';
+import 'package:autentification/app/presentation/controllers/auth_controller.dart';
 import 'package:autentification/app/presentation/views/login_view.dart';
 import 'package:autentification/app/presentation/views/register.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +7,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../views/home_view.dart';
 
+final userLoaderFutureProvider = StreamProvider<UserModel?>((ref) {
+  final authRepository = ref.watch(authenticationRepositoryProvider);
+  return authRepository.isUserLoggedIn();
+});
+
 final _navigatorKey = GlobalKey<NavigatorState>();
 
 final goRouterProvider = Provider<GoRouter>((ref) {
+  final userLoaderState = ref.watch(userLoaderFutureProvider);
+  //final userAuthState = ref.watch(sessionControllerProvider);
   return GoRouter(
     initialLocation: '/',
     navigatorKey: _navigatorKey,
@@ -28,11 +37,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const Register(),
       )
     ],
-    // redirect: (context, state) {
-    //   if (authState.isAuthenticated) {
-    //     return '/logout';
-    //   }
-    //   return '/';
-    // },
+    redirect: (context, state) {
+      //if (userLoaderState.isLoading) {
+      //  if (state.uri.toString() != '/splash') return '/splash';
+      // return null;
+      //   }
+
+      if (userLoaderState.value == null) {
+        if (state.uri.toString() != '/') return '/';
+        return null;
+      }
+
+      if (state.uri.toString() == '/') {
+        return '/home';
+      }
+      return null;
+    },
   );
 });
