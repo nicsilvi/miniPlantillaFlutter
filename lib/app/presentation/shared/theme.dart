@@ -8,7 +8,8 @@ class AppTheme {
   // Light theme  ---------------------------------------------------------------------------------------------
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     //al ser copywith solo se modifica lo especificado aqui
-
+    primaryColor: const Color.fromARGB(255, 96, 3, 114),
+    primaryColorDark: Colors.black,
     scaffoldBackgroundColor: AppColors.lightBg,
     appBarTheme: const AppBarTheme(
       color: AppColors.lightBg,
@@ -54,6 +55,8 @@ class AppTheme {
 
   // darktheme  ---------------------------------------------------------------------------------------------
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
+    primaryColor: const Color.fromARGB(255, 223, 154, 5),
+    primaryColorDark: Colors.black,
     scaffoldBackgroundColor: AppColors.dark,
     appBarTheme: const AppBarTheme(
       color: AppColors.dark2,

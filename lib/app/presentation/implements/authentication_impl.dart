@@ -1,11 +1,18 @@
 /*implementación para acceder a API, sigIn, signOut, getUser, delete, userExist, etc
 */
 
+import 'package:autentification/app/presentation/shared/firebase_util.dart'
+    show getUserFromFirestore, saveUserToFirestore;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/constants/assets.dart';
 import '../../domain/models/user_model.dart';
 import '../controllers/auth_controller.dart';
+import '../shared/utils.dart';
+
+final errorMessageProvider = StateProvider<String?>((ref) => null);
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   AuthenticationRepositoryImpl();
@@ -14,7 +21,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   //User? get currentUser => FirebaseAuth.instance.currentUser;
 
   @override
-  Future<UserModel?> signIn(String email, String password) async {
+  Future<UserResponse?> signIn(
+      String email, String password, WidgetRef ref) async {
     try {
       final credentials =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -22,42 +30,48 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         password: password,
       );
       if (credentials.user == null) {
-        print("error null");
-        return null;
+        return UserResponse(errorMessage: "Error, user not found");
       }
-      final userModel = UserModel(
-        id: credentials.user!.uid,
-        email: email,
-        firstName: email.split('@').first,
-        createdAt: DateTime.now(),
-      );
-      /* para recuperar los datos de firebaseStore, luego habra que cambiar el return por el userModel
-      final doc = await FirebaseFirestore.instance
-          .collection('users') 
-          .doc(credentials.user!.uid)
-          .get();
-      if (!doc.exists) {
-        return null;
+      final userModel = await getUserFromFirestore(credentials.user!.uid);
+      if (userModel == null) {
+        return UserResponse(errorMessage: "Error, user not found");
       }
-       final userModel = UserModel.fromJson(doc.data()!);
-
-          */
-
-      return userModel;
+      return UserResponse(user: userModel);
     } on FirebaseAuthException catch (e) {
-      debugPrint("FirebaseAuth Error: ${e.code}");
-      return null;
+      String errorMessage;
+      //
+      if (e.message == "The email address is badly formatted.") {
+        errorMessage = "El correo electrónico no es válido";
+      } else if (e.message ==
+          "There is no user record corresponding to this identifier. The user may have been deleted.") {
+        errorMessage = "Usuario o contraseña incorrecta";
+      } else if ((e.message ==
+              "The password is invalid or the user does not have a password.") ||
+          (e.message ==
+              "The supplied auth credential is incorrect, malformed or has expired.")) {
+        errorMessage = "Usuario o contraseña incorrecta";
+      } else {
+        errorMessage =
+            e.message ?? "Ha ocurrido un error inesperado, vuelva a intentarlo";
+      }
+      ref.read(errorMessageProvider.notifier).state = errorMessage;
+      return UserResponse(errorMessage: errorMessage);
     } catch (e) {
-      debugPrint("Error general: ${e.toString()}");
-      return null;
+      const errorMessage =
+          "Ha ocurrido un error inesperado, vuelva a intentarlo";
+      ref.read(errorMessageProvider.notifier).state = errorMessage;
+
+      return UserResponse(errorMessage: errorMessage);
     }
   }
 
   @override
-  Future<UserModel?> register({
+  Future<UserResponse?> register({
     required String email,
-    required String name,
+    required String firstname,
+    String? lastname,
     required String password,
+    required WidgetRef ref,
   }) async {
     try {
       final credentials =
@@ -72,24 +86,36 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final newUser = UserModel(
         id: credentials.user!.uid,
         email: email,
-        firstName: email.split('@').first,
+        firstName: capitalize(firstname),
+        lastName: capitalize(lastname ?? ''),
         createdAt: DateTime.now(),
+        profileImage: Assets.UserIcon,
       );
-/* esto para guardar en FIRESTORE
-      await FirebaseFirestore.instance
-          .collection(Collections.users)
-          .doc(credentials.user!.uid)
-          .set(
-            userToCreate.toJson(),
-          );*/
+      await saveUserToFirestore((newUser));
+      print("User created: ${newUser.toJson()}");
 
-      return newUser;
+      return UserResponse(user: newUser);
     } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == "email-already-in-use") {
+        errorMessage = "El correo electrónico ya está en uso";
+      } else if (e.code == "invalid-email") {
+        errorMessage = "El correo electrónico no es válido";
+      } else if (e.code == "weak-password") {
+        errorMessage = "La contraseña es demasiado débil";
+      } else {
+        errorMessage =
+            e.message ?? "Ha ocurrido un error inesperado, vuelva a intentarlo";
+      }
       debugPrint(e.code);
-      return null;
+      ref.read(errorMessageProvider.notifier).state = errorMessage;
+      return UserResponse(errorMessage: errorMessage);
     } catch (e) {
-      debugPrint(e.toString());
-      return null;
+      const errorMessage =
+          "Ha ocurrido un error inesperado, vuelva a intentarlo";
+      ref.read(errorMessageProvider.notifier).state = errorMessage;
+
+      return UserResponse(errorMessage: errorMessage);
     }
   }
 
@@ -105,23 +131,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<UserModel?> getUser(String userId) async {
-    /*try {
-      final doc = await FirebaseFirestore.instance
-          .collection(Collections.users)
-          .doc(userId)
-          .get();
-      if (doc.data() == null) return null;
-      return UserModel.fromJson(doc.data()!);
+    try {
+      final userModel = await getUserFromFirestore(userId);
+      if (userModel == null) return null;
+      return UserModel.fromJson(userModel.toJson());
     } catch (e) {
       debugPrint(e.toString());
-      */
-    final newUser = UserModel(
-      id: "1",
-      email: "email@gmail.com",
-      firstName: "silvia",
-      createdAt: DateTime.now(),
-    );
-    return newUser;
+      return null;
+    }
   }
 
 /*
@@ -220,13 +237,16 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       if (user == null) {
         yield null;
       } else {
-        //mapejarem el model de dades de firebase amb el nostre
-        yield UserModel(
-          id: user.uid,
-          email: user.email ?? '',
-          firstName: user.email?.split('@')[0] ?? '-',
-          createdAt: DateTime.now(),
-        );
+        try {
+          final userModel = await getUserFromFirestore(user.uid);
+          if (userModel != null) {
+            yield userModel; // Devuelve el modelo completo del usuario
+          } else
+            yield null;
+        } catch (e) {
+          debugPrint("Error al recuperar el usuario: $e");
+          yield null;
+        }
       }
     }
   }

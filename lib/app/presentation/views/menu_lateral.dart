@@ -12,62 +12,63 @@ class DrawerMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeService = ref.watch(
         themeControllerProvider); // es watch pq se reconstruye este mismo widget
-    final authService = ref
-        .read(authenticationRepositoryProvider)
-        .getUser; //aqui no se reconstruye, sino qe cambia de pantalla
+    final authService = ref.read(authenticationRepositoryProvider);
 
     return Drawer(
-        child: SingleChildScrollView(
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          //mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              child: const SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text("Menú",
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
+      child: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration:
+                    BoxDecoration(color: Theme.of(context).primaryColor),
+                child: const SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text("Menú",
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text("Perfil"),
-              onTap: () {
-                //ir al profileview
-                // context.go('/profile');
-              },
-            ),
-            ListTile(
-              leading: Icon(themeService ? Icons.light_mode : Icons.dark_mode),
-              title: Text(themeService ? "modo claro" : "modo oscuro"),
-              onTap: () {
-                context.pop();
-                ref.read(themeControllerProvider.notifier).updateTheme();
-                print("thema ahora es: ${ref.read(themeControllerProvider)}");
-              },
-            ),
-            const Divider(
-              indent: 20,
-              endIndent: 20,
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Cerrar sesión"),
-              onTap: () async {
-                //;
-                if (!context.mounted) return;
-                context.go('/');
-              },
-            ),
-          ],
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text("Mi Perfil"),
+                onTap: () {
+                  //ir al profileview
+                  context.pop();
+                  context.goNamed("/profile");
+                },
+              ),
+              ListTile(
+                leading:
+                    Icon(themeService ? Icons.light_mode : Icons.dark_mode),
+                title: Text(themeService ? "Modo claro" : "Modo oscuro"),
+                onTap: () {
+                  context.pop();
+                  ref.read(themeControllerProvider.notifier).updateTheme();
+                  print("thema ahora es: ${ref.read(themeControllerProvider)}");
+                },
+              ),
+              const Divider(
+                indent: 20,
+                endIndent: 20,
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text("Cerrar sesión"),
+                onTap: () async {
+                  if (!context.mounted) return;
+                  await authService.signOut();
+                },
+              ),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }

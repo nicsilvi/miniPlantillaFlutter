@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import '../controllers/auth_controller.dart';
 
 class Register extends ConsumerWidget {
@@ -13,6 +12,7 @@ class Register extends ConsumerWidget {
     //final state = ref.watch(authenticationRepositoryProvider);
     final authNotifier = ref.read(authenticationRepositoryProvider);
     final TextEditingController emailController = TextEditingController();
+    final TextEditingController lastnameController = TextEditingController();
     final TextEditingController nameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
@@ -37,6 +37,19 @@ class Register extends ConsumerWidget {
                   controller: nameController,
                   decoration: InputDecoration(
                     labelText: "Nombre",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  controller: lastnameController,
+                  decoration: InputDecoration(
+                    labelText: "Apellidos",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
@@ -80,12 +93,14 @@ class Register extends ConsumerWidget {
                   onPressed: () async {
                     await authNotifier.register(
                       email: emailController.text,
-                      name: nameController.text,
+                      firstname: nameController.text,
+                      lastname: lastnameController.text,
                       password: passwordController.text,
+                      ref: ref,
                     );
                     context.go('/home');
                   },
-                  child: Text('Login'),
+                  child: Text('Registrarse'),
                 ),
                 SizedBox(height: 12),
                 TextButton(
@@ -93,10 +108,10 @@ class Register extends ConsumerWidget {
                     context.go('/');
                   },
                   child: RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       text: "¿Ya tienes cuenta?   ",
-                      style: TextStyle(color: Colors.black),
-                      children: [
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                      children: const [
                         TextSpan(
                           text: "Inicia sesión",
                           style: TextStyle(color: Colors.greenAccent),

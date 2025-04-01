@@ -8,17 +8,26 @@ final authenticationRepositoryProvider = Provider<AuthenticationRepository>(
   (ref) => AuthenticationRepositoryImpl(),
 );
 
+class UserResponse {
+  final UserModel? user;
+  final String? errorMessage;
+
+  UserResponse({this.user, this.errorMessage});
+}
+
 abstract class AuthenticationRepository {
-  Future<UserModel?> signIn(
+  Future<UserResponse?> signIn(
     String email,
     String password,
+    WidgetRef ref,
   );
 
-  Future<UserModel?> register({
-    required String email,
-    required String name,
-    required String password,
-  });
+  Future<UserResponse?> register(
+      {required String email,
+      required String firstname,
+      String? lastname,
+      required String password,
+      required WidgetRef ref});
 
   Future<bool> signOut();
   Future<UserModel?> getUser(String userId);

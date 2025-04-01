@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../controllers/auth_controller.dart';
+import '../implements/authentication_impl.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
@@ -14,6 +15,7 @@ class LoginPage extends ConsumerWidget {
     final authNotifier = ref.read(authenticationRepositoryProvider);
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
+    final errorMessage = ref.watch(errorMessageProvider);
 
     return Scaffold(
       body: Center(
@@ -65,21 +67,36 @@ class LoginPage extends ConsumerWidget {
                 SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () async {
-                    await authNotifier.signIn(
-                        emailController.text, passwordController.text);
+                    final response = await authNotifier.signIn(
+                        emailController.text, passwordController.text, ref);
+                    if (response?.errorMessage != null) {
+                      ref.read(errorMessageProvider.notifier).state =
+                          response?.errorMessage;
+                    } else {
+                      context.go('/home');
+                    }
                   },
                   child: Text('Login'),
                 ),
+                SizedBox(height: 12),
+                if (errorMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Text(
+                      errorMessage!,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
                 SizedBox(height: 12),
                 TextButton(
                   onPressed: () {
                     context.go('/register');
                   },
                   child: RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       text: "¿No tienes cuenta?   ",
-                      style: TextStyle(color: Colors.black),
-                      children: [
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                      children: const [
                         TextSpan(
                           text: "Regístrate",
                           style: TextStyle(color: Colors.greenAccent),
