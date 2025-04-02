@@ -1,4 +1,4 @@
-# autentification
+# README.md
 
 Plantilla básica en Flutter con funcionalidades esenciales como autenticación, gestión de usuarios, tema claro/oscuro y navegación estructurada.
 
@@ -9,6 +9,7 @@ Ajuste de imagen de perfil desde la galería o la cámara.
 Estructura de navegación básica para expandir funcionalidades.
 
 git checkout firebase-auth para ver la conexión con firebase, la rama main tiene una funcionalidad básica para apps más simples.
+Las claves de firebase no valen, para configurar unas nuevas "flutterfire configure"
 
 ## Getting Started
 
