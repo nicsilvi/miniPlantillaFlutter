@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAwZteeLfiGLrMs3le2qGpDezZwFcvdorg',
+    apiKey: 'AIzaSyA93jXwKx0edS-vnwQ1maAzrNELexaR7wg',
     appId: '1:17068021892:web:427dd39b6494b0abd1cad1',
     messagingSenderId: '17068021892',
     projectId: 'plantillaflutterpro',
@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCLD9iOcjhIWJZ1YJG7O-0B48v0_BvIA90',
+    apiKey: 'AIzaSyCMY76gleGIhTNW1UFY_-RCckHmMB-PC6M',
     appId: '1:17068021892:android:6fbc79dbf8beac21d1cad1',
     messagingSenderId: '17068021892',
     projectId: 'plantillaflutterpro',
@@ -59,29 +59,25 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBwcfMEVQCVx90_ktBukwvT4VPDyFELSIM',
+    apiKey: 'AIzaSyDGg_eUadQjOKiIpvPagJabnL2f_o075go',
     appId: '1:17068021892:ios:51cfbd5a56a2e44bd1cad1',
     messagingSenderId: '17068021892',
     projectId: 'plantillaflutterpro',
     storageBucket: 'plantillaflutterpro.firebasestorage.app',
-    androidClientId: '17068021892-v9pottp1urktskdhvsf7mqb98f509q18.apps.googleusercontent.com',
-    iosClientId: '17068021892-gigshf29mjtvts5sh8ip61tg325qh7lc.apps.googleusercontent.com',
     iosBundleId: 'com.example.autentification',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBwcfMEVQCVx90_ktBukwvT4VPDyFELSIM',
+    apiKey: 'AIzaSyDGg_eUadQjOKiIpvPagJabnL2f_o075go',
     appId: '1:17068021892:ios:51cfbd5a56a2e44bd1cad1',
     messagingSenderId: '17068021892',
     projectId: 'plantillaflutterpro',
     storageBucket: 'plantillaflutterpro.firebasestorage.app',
-    androidClientId: '17068021892-v9pottp1urktskdhvsf7mqb98f509q18.apps.googleusercontent.com',
-    iosClientId: '17068021892-gigshf29mjtvts5sh8ip61tg325qh7lc.apps.googleusercontent.com',
     iosBundleId: 'com.example.autentification',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAwZteeLfiGLrMs3le2qGpDezZwFcvdorg',
+    apiKey: 'AIzaSyA93jXwKx0edS-vnwQ1maAzrNELexaR7wg',
     appId: '1:17068021892:web:ec6188405873d624d1cad1',
     messagingSenderId: '17068021892',
     projectId: 'plantillaflutterpro',

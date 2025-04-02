@@ -12,33 +12,15 @@
           "package_name": "com.plantilla.autentification"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "17068021892-v9pottp1urktskdhvsf7mqb98f509q18.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.plantilla.autentification",
-            "certificate_hash": "2404fc3f4032fdb3fc72af1270cfdf77f7745822"
-          }
-        },
-        {
-          "client_id": "17068021892-2ofdgsvnpfopft9145iusir5q3197ucj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCLD9iOcjhIWJZ1YJG7O-0B48v0_BvIA90"
+          "current_key": "AIzaSyCMY76gleGIhTNW1UFY_-RCckHmMB-PC6M"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "17068021892-2ofdgsvnpfopft9145iusir5q3197ucj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
