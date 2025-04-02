@@ -34,6 +34,7 @@ class DrawerMenu extends ConsumerWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 10),
               ListTile(
                 leading: const Icon(Icons.person),
                 title: const Text("Mi Perfil"),
@@ -43,6 +44,17 @@ class DrawerMenu extends ConsumerWidget {
                   context.goNamed("/profile");
                 },
               ),
+              const SizedBox(height: 10),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text("Settings"),
+                onTap: () {
+                  context.pop();
+                  //ir a la vista de settings
+                  print("settings button");
+                },
+              ),
+              const SizedBox(height: 10),
               ListTile(
                 leading:
                     Icon(themeService ? Icons.light_mode : Icons.dark_mode),

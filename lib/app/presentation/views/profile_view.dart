@@ -55,6 +55,7 @@ class _ProfileViewState extends ConsumerState<ProfileView>
               child: Column(
                 children: [
                   const SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () async {
                       await pickAndSelectImage(
