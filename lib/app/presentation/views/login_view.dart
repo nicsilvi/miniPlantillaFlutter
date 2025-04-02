@@ -34,7 +34,7 @@ class LoginPage extends ConsumerWidget {
               children: [
                 Text("Inicio de sesión",
                     style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -64,7 +64,7 @@ class LoginPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () async {
                     final response = await authNotifier.signIn(
@@ -73,21 +73,23 @@ class LoginPage extends ConsumerWidget {
                       ref.read(errorMessageProvider.notifier).state =
                           response?.errorMessage;
                     } else {
-                      context.go('/home');
+                      if (context.mounted) {
+                        context.go('/home');
+                      }
                     }
                   },
-                  child: Text('Login'),
+                  child: const Text('Login'),
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 if (errorMessage != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: Text(
-                      errorMessage!,
-                      style: TextStyle(color: Colors.red),
+                      errorMessage,
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 TextButton(
                   onPressed: () {
                     context.go('/register');

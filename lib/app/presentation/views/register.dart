@@ -32,7 +32,7 @@ class Register extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("Registro:", style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
@@ -88,7 +88,7 @@ class Register extends ConsumerWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () async {
                     await authNotifier.register(
@@ -98,11 +98,13 @@ class Register extends ConsumerWidget {
                       password: passwordController.text,
                       ref: ref,
                     );
-                    context.go('/home');
+                    if (context.mounted) {
+                      context.go('/home');
+                    }
                   },
-                  child: Text('Registrarse'),
+                  child: const Text('Registrarse'),
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 TextButton(
                   onPressed: () {
                     context.go('/');

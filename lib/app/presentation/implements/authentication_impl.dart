@@ -3,10 +3,10 @@
 
 import 'package:autentification/app/presentation/shared/firebase_util.dart'
     show getUserFromFirestore, saveUserToFirestore;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../core/constants/assets.dart';
 import '../../domain/models/user_model.dart';
 import '../controllers/auth_controller.dart';
@@ -32,7 +32,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       if (credentials.user == null) {
         return UserResponse(errorMessage: "Error, user not found");
       }
-      final userModel = await getUserFromFirestore(credentials.user!.uid);
+      final userModel = await getUser(credentials.user!.uid);
       if (userModel == null) {
         return UserResponse(errorMessage: "Error, user not found");
       }
@@ -89,7 +89,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         firstName: capitalize(firstname),
         lastName: capitalize(lastname ?? ''),
         createdAt: DateTime.now(),
-        profileImage: Assets.UserIcon,
+        profileImage: Assets.userIcon1,
       );
       await saveUserToFirestore((newUser));
       print("User created: ${newUser.toJson()}");
@@ -132,9 +132,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<UserModel?> getUser(String userId) async {
     try {
-      final userModel = await getUserFromFirestore(userId);
-      if (userModel == null) return null;
-      return UserModel.fromJson(userModel.toJson());
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (!doc.exists) return null;
+      return UserModel.fromJson(
+          doc.data()!); // Usa `data()` para obtener los datos
     } catch (e) {
       debugPrint(e.toString());
       return null;
@@ -229,7 +233,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 } */
-
+  @override
   Stream<UserModel?> isUserLoggedIn() async* {
     final userStream = FirebaseAuth.instance.authStateChanges();
     await for (final User? user in userStream) {
@@ -238,11 +242,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         yield null;
       } else {
         try {
-          final userModel = await getUserFromFirestore(user.uid);
-          if (userModel != null) {
-            yield userModel; // Devuelve el modelo completo del usuario
-          } else
-            yield null;
+          final userDocStream = getUserFromFirestore(user.uid);
+          await for (final userModel in userDocStream) {
+            if (userModel != null) {
+              yield userModel; // Devuelve el modelo completo del usuario
+            } else {
+              yield null;
+            }
+          }
         } catch (e) {
           debugPrint("Error al recuperar el usuario: $e");
           yield null;

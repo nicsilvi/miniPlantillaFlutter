@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../controllers/router_controller.dart';
 import 'menu_lateral.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({super.key});
@@ -37,9 +35,14 @@ class _ProfileViewState extends ConsumerState<ProfileView>
   @override
   Widget build(BuildContext context) {
     final userLoaderState = ref.watch(userLoaderFutureProvider);
+    Image img = Image.asset(Assets.userIcon1);
+
+    if (userLoaderState.value?.profileImage != null) {
+      img = Image.asset(userLoaderState.value!.profileImage!);
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Perfil"),
+        title: const Text("Perfil"),
       ),
       endDrawer: const DrawerMenu(),
       body: Column(
@@ -54,15 +57,10 @@ class _ProfileViewState extends ConsumerState<ProfileView>
                   const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () async {
-                      await pickAndUploadImage(userLoaderState.value?.id ?? '');
+                      await pickAndSelectImage(
+                          context, userLoaderState.value!.id);
                     },
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundImage: userLoaderState.value?.profileImage !=
-                              null
-                          ? NetworkImage(userLoaderState.value!.profileImage!)
-                          : AssetImage(Assets.UserIcon),
-                    ),
+                    child: CircleAvatar(radius: 60, backgroundImage: img.image),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -89,9 +87,9 @@ class _ProfileViewState extends ConsumerState<ProfileView>
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        Center(child: Text("Basic")),
-                        Center(child: Text("Advanced")),
-                        Center(child: Text("Special Effects")),
+                        const Center(child: Text("Basic")),
+                        const Center(child: Text("Advanced")),
+                        const Center(child: Text("Special Effects")),
                       ],
                     ),
                   ),

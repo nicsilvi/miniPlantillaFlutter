@@ -26,6 +26,7 @@ class UserModel {
     String? lastName,
     String? phoneNumber,
     DateTime? createdAt,
+    String? profileImage,
   }) =>
       UserModel(
         id: id ?? this.id,
@@ -34,6 +35,7 @@ class UserModel {
         lastName: lastName ?? this.lastName,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         createdAt: createdAt ?? this.createdAt,
+        profileImage: profileImage ?? this.profileImage,
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class UserModel {
       createdAt: json["createdAt"] == null
           ? DateTime.now()
           : json["createdAt"].toDate(),
+      profileImage: json["profileImage"],
     );
   }
 
@@ -56,5 +59,6 @@ class UserModel {
         "createdAt": Timestamp.fromDate(createdAt),
         if (lastName != null) "lastName": lastName,
         if (phoneNumber != null) "phoneNumber": phoneNumber,
+        if (profileImage != null) "profileImage": profileImage,
       };
 }
