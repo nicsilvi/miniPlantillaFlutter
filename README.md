@@ -1,6 +1,14 @@
 # autentification
 
-A new Flutter project.
+Plantilla básica en Flutter con funcionalidades esenciales como autenticación, gestión de usuarios, tema claro/oscuro y navegación estructurada.
+
+Menú lateral (Drawer) para navegación sencilla.
+Modo Claro/Oscuro con persistencia de estado.
+Gestión de usuarios con perfil editable.
+Ajuste de imagen de perfil desde la galería o la cámara.
+Estructura de navegación básica para expandir funcionalidades.
+
+git checkout firebase-auth para ver la conexión con firebase, la rama main tiene una funcionalidad básica para apps más simples.
 
 ## Getting Started
 
